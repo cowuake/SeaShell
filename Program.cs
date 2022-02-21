@@ -9,17 +9,104 @@ class Program
     }
 }
 
+public class Instruction
+{
+    public string Command;
+    public string Args;
+    public Process Proc;
+
+    public Int32 ?ExitCode;
+    public string ?Stdout;
+    public string ?Stderr;
+
+    // Constructor
+    public Instruction(string command, string args)
+    {
+        Command = command;
+        Args = args;
+        Proc = new Process();
+    }
+
+    public void Execute()
+    {
+        this.Proc.StartInfo.FileName = this.Command;
+        this.Proc.StartInfo.Arguments = this.Args;
+
+        // Spawn the process
+        this.Proc.Start();
+
+        if (this.Proc.StartInfo.RedirectStandardError == true)
+        { this.Stderr = this.Proc.StandardError.ReadToEnd(); }
+
+        if (this.Proc.StartInfo.RedirectStandardOutput == true)
+        { this.Stdout = this.Proc.StandardOutput.ReadToEnd(); }
+
+        this.Proc.WaitForExit();
+
+        //Console.WriteLine(this.Stdout);
+        this.ExitCode = this.Proc.ExitCode;
+    }
+}
+
+public class Pipeline
+{
+    public Instruction[] Instructions;
+    public Int32 Length;
+
+    // Constructor
+    public Pipeline(Instruction[] instructions)
+    {
+        this.Instructions = instructions;
+        this.Length = instructions.Length;
+    }
+
+    public void Execute()
+    {
+        if (this.Length > 1) { this.Instructions[0].Proc.StartInfo.RedirectStandardOutput = true; }
+        this.Instructions[0].Execute();
+
+        for (int i = 1; i < this.Length; i++)
+        {
+            if (this.Instructions[i-1].ExitCode == 0)
+            {
+                if (i < this.Length - 1)
+                {
+                    this.Instructions[i].Proc.StartInfo.RedirectStandardOutput = true;
+                }
+                //this.Instructions[i].Args += (" " + this.Instructions[i-1].Stdout);
+
+                this.Instructions[i].Execute();
+            }
+        }
+    }
+}
+
 public class SeaShell
 {
+    private static void beep()
+    { Console.Beep(); }
+
     private static void cow()
     { Console.WriteLine("🐮 There is no cow level 🐮"); }
 
-    private Dictionary<string, Action> Builtin = new Dictionary<string, Action>()
+    private static void exit()
+    { Environment.Exit(0); }
+
+    private static void hostname()
+    { Console.WriteLine(Environment.MachineName); }
+
+    private static void username()
+    { Console.WriteLine(Environment.UserName); }
+
+    public static Dictionary<string, Action<string>> BuiltinCommands =
+        new Dictionary<string, Action<string>>()
     {
-        { "beep", () => Console.Beep() },
-        { "cow", () => cow() },
-        { "exit", () => Environment.Exit(0) },
-        { "quit", () => Environment.Exit(0) },
+        { "beep"        , (args) => beep()        },
+        { "cow"         , (args) => cow()         },
+        { "exit"        , (args) => exit()        },
+        { "hostname"    , (args) => hostname()    },
+        { "quit"        , (args) => exit()        },
+        { "username"    , (args) => username()    },
     };
 
     private void WriteColored(string text, ConsoleColor color, bool newLine = false)
@@ -29,67 +116,62 @@ public class SeaShell
         Console.ResetColor();
     }
 
-    private (string, string) Prompt()
+    private (string?, string?) Prompt()
     {
     //Console.WriteLine("[{0}@{1}]", Environment.UserName, Environment.MachineName);
-        Console.Write(">> ");
-        var input = Console.ReadLine().Trim().Split(' ');
-        var command = input[0];
+        WriteColored(">> ", ConsoleColor.DarkCyan);
+        string? rawInput = Console.ReadLine();
 
-        for (int i = 1; i < input.Length-1; i++)
+        if (rawInput != null)
         {
-            // Clean command and arguments
-            input[i].Trim();
-        }
-        var args = string.Join(" ", input[1..]);
+            var input = rawInput.Trim().Split(' ');
+            var command = input[0];
 
-        return (command, args);
+            for (int i = 1; i < input.Length-1; i++)
+            {
+                // Clean command and arguments
+                input[i].Trim();
+            }
+            var args = string.Join(" ", input[1..]);
+
+            return (command, args);
+        }
+
+        return (null, null);
     }
 
     public void Run()
     {
-        string command = "", args = "";
+        string? command, args;
 
         while (true)
         {
             (command, args) = Prompt();
 
-            if (Builtin.ContainsKey(command))
+            if (BuiltinCommands.ContainsKey(command))
             {
-                Builtin[command]();
-            } else {
-                try
+                BuiltinCommands[command](args);
+                continue;
+            }
+
+            try
+            {
+                var instruction = new Instruction(command, args);
+                instruction.Execute();
+            } catch {
+                string message = "Command not found: ";
+                string filler = "";
+
+                if ((message+command+" "+args).Length > Console.BufferWidth)
                 {
-                    var exitStatus = Exec(command, args);
-                } catch {
-                    string message = "Command not found: ";
-                    string filler = "";
-
-                    if ((message+command+" "+args).Length > Console.BufferWidth)
-                    {
-                        filler = "\n";
-                    } else {
-                        filler = " ";
-                    }
-
-                    WriteColored(message, ConsoleColor.Red);
-                    Console.WriteLine("{0}{1} {2}", filler, command, args);
+                    filler = "\n";
+                } else {
+                    filler = " ";
                 }
+
+                WriteColored(message, ConsoleColor.Red);
+                Console.WriteLine("{0}{1} {2}", filler, command, args);
             }
         }
-    }
-
-    private int Exec(string command, string args)
-    {
-        var proc = new Process();
-
-        proc.StartInfo.FileName = command;
-        proc.StartInfo.Arguments = args;
-
-        // Spawn the process
-        proc.Start();
-        proc.WaitForExit();
-
-        return 0;
     }
 }
