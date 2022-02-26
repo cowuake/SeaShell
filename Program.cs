@@ -124,15 +124,15 @@ public class SeaShell
 
         if (rawInput != null)
         {
-            var input = rawInput.Trim().Split(' ');
-            var command = input[0];
+            string[] input = rawInput.Trim().Split(' ');
+            string command = input[0];
 
             for (int i = 1; i < input.Length-1; i++)
             {
                 // Clean command and arguments
                 input[i].Trim();
             }
-            var args = string.Join(" ", input[1..]);
+            string args = string.Join(" ", input[1..]);
 
             return (command, args);
         }
