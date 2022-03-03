@@ -19,6 +19,16 @@ namespace SeaShellUtilities
             }
         }
 
+        public static bool IsAllUpperCase(this string str)
+        {
+            return str.Where(x => char.IsLetter(x)).All(x => char.IsUpper(x));
+        }
+
+        public static bool IsAllLowerCase(this string str)
+        {
+            return str.Where(x => char.IsLetter(x)).All(x => char.IsLower(x));
+        }
+
         // Check if a string can be print without exceeding the current buffer width
         public static bool IsWithinBufferWidth(this string str)
         {
@@ -48,10 +58,10 @@ namespace SeaShellUtilities
             string[] strArray = s.Split(' ');
             var result = new StringBuilder();
 
-            for (var i = 0; i < strArray.Length; i++)
+            for (int i = 0; i < strArray.Length; i++)
             {
                 result.Append(ReverseString(strArray[i]));
-                result.Append(i < strArray.Length - 1 ? " " : "");
+                result.Append(i < strArray.Length - 1 ? " " : null);
             }
 
             return result.ToString();
