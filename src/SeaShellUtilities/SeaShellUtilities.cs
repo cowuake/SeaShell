@@ -19,14 +19,24 @@ namespace SeaShellUtilities
             }
         }
 
-        public static bool IsAllUpperCase(this string str)
+        public static bool IsAllUpper(this string str)
         {
-            return str.Where(x => char.IsLetter(x)).All(x => char.IsUpper(x));
+            if (string.IsNullOrEmpty(str) || string.IsNullOrWhiteSpace(str))
+            {
+                return false;
+            }
+
+            return str.Where(c => char.IsLetter(c)).All(c => char.IsUpper(c));
         }
 
-        public static bool IsAllLowerCase(this string str)
+        public static bool IsAllLower(this string str)
         {
-            return str.Where(x => char.IsLetter(x)).All(x => char.IsLower(x));
+            if (string.IsNullOrEmpty(str) || string.IsNullOrWhiteSpace(str))
+            {
+                return false;
+            }
+
+            return str.Where(c => char.IsLetter(c)).All(c => char.IsLower(c));
         }
 
         // Check if a string can be print without exceeding the current buffer width

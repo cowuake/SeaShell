@@ -7,13 +7,17 @@ namespace SeaShellUtilities.Tests;
 public class UnitTest1
 {
     [TestMethod]
-    public void TestIsAllXxxerCase()
+    public void TestIsAllXxxer()
     {
-        Assert.IsTrue("HELLO!!!".IsAllUpperCase());
-        Assert.IsFalse("HellO".IsAllUpperCase());
-        Assert.IsTrue("hello!!!".IsAllLowerCase());
-        Assert.IsTrue("helo!@*&%!".IsAllLowerCase());
-        Assert.IsFalse("heLlo!@*&%!".IsAllLowerCase());
+        Assert.IsTrue("HELLO!!!".IsAllUpper());
+        Assert.IsFalse("HellO".IsAllUpper());
+        Assert.IsFalse("".IsAllUpper());
+        Assert.IsFalse("   ".IsAllUpper());
+        Assert.IsTrue("hello!!!".IsAllLower());
+        Assert.IsTrue("helo!@*&%!".IsAllLower());
+        Assert.IsFalse("heLlo!@*&%!".IsAllLower());
+        Assert.IsFalse("".IsAllLower());
+        Assert.IsFalse("   ".IsAllLower());
     }
 
     [TestMethod]

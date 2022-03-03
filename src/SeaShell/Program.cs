@@ -120,6 +120,11 @@ namespace SeaShell
             Console.ResetColor();
         }
 
+        private void WriteLineColored(string text, ConsoleColor color)
+        {
+            WriteColored(text, color, true);
+        }
+
         private (string?, string?) Prompt()
         {
         //Console.WriteLine("[{0}@{1}]", Environment.UserName, Environment.MachineName);
@@ -151,6 +156,17 @@ namespace SeaShell
             while (true)
             {
                 (command, args) = Prompt();
+
+                // Don't waste time within the cycle if input was void
+                if (string.IsNullOrEmpty(command) || string.IsNullOrWhiteSpace(command))
+                {
+                    continue;
+                }
+
+                if (command.IsAllUpper())
+                {
+                    WriteLineColored("Please, don't shout at me! D:", ConsoleColor.DarkMagenta);
+                }
 
                 if (BuiltinCommands.ContainsKey(command))
                 {
