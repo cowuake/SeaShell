@@ -76,5 +76,46 @@ namespace SeaShellUtilities
 
             return result.ToString();
         }
+
+        public static T[] Rotate<T>(this T[] array, int offset, string direction = "left")
+        {
+            if (array.Length == 0) { return array; }
+
+            var newArray = (T[]) Array.CreateInstance(typeof(T), array.Length);
+            Array.Copy(array, newArray, array.Length);
+            newArray.RotateInPlace(offset, direction);
+
+            return newArray;
+        }
+
+        public static void RotateInPlace<T>(this T[] array, int offset = 1, string direction = "left")
+        {
+            if (array.Length == 0) { return; }
+            if (direction.ToLower() != "left" && direction.ToLower() != "right") {
+                return;
+            }
+
+            if (direction == "left")
+            {
+                T a = array[0];
+                for (int i = 0; i < array.Length - 1; i++)
+                {
+                    array[i] = array[i+1];
+                }
+                array[array.Length-1] = a;
+            } else {
+                T a = array[array.Length-1];
+                for (int i = array.Length - 1; i > 0; i--)
+                {
+                    array[i] = array[i-1];
+                }
+                array[0] = a;
+            }
+
+            if (offset > 1)
+            {
+                array.RotateInPlace(offset - 1, direction);
+            }
+        }
     }
 }
