@@ -97,19 +97,19 @@ namespace SeaShellUtilities
 
             if (direction == "left")
             {
-                T a = array[0];
+                T temp = array[0];
                 for (int i = 0; i < array.Length - 1; i++)
                 {
-                    array[i] = array[i+1];
+                    array[i] = array[i + 1];
                 }
-                array[array.Length-1] = a;
+                array[array.Length-1] = temp;
             } else {
-                T a = array[array.Length-1];
+                T temp = array[array.Length - 1];
                 for (int i = array.Length - 1; i > 0; i--)
                 {
-                    array[i] = array[i-1];
+                    array[i] = array[i - 1];
                 }
-                array[0] = a;
+                array[0] = temp;
             }
 
             if (offset > 1)
