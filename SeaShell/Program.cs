@@ -1,15 +1,21 @@
 ﻿using System.Diagnostics;
+using SeaShell.Utilities;
 
 namespace SeaShell
 {
-    using SeaShellUtilities;
-
     class Program
     {
         static void Main(string[] args)
         {
             var shell = new SeaShell();
-            try { shell.Run(); } catch {}
+
+            try {
+                shell.Run();
+            }
+            catch (Exception excpt)
+            {
+                Console.WriteLine(excpt.Message);
+            }
         }
     }
 

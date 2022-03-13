@@ -1,12 +1,12 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SeaShellUtilities;
+using SeaShell.Utilities;
 using System;
 using System.Linq;
 
-namespace SeaShellUtilities.Tests;
+namespace SeaShellTest;
 
 [TestClass]
-public class UnitTest1
+public class SeaShellUtilitiesTest
 {
     [TestMethod]
     public void TestArrayRotate()

@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\SeaShellUtilities\SeaShellUtilities.csproj" />
+    <ProjectReference Include="..\SeaShell\SeaShell.csproj" />
   </ItemGroup>
 
 </Project>

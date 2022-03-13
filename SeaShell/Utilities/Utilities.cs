@@ -1,7 +1,7 @@
 using System.Text;
 using System.Linq;
 
-namespace SeaShellUtilities
+namespace SeaShell.Utilities
 {
     public static class Utilities
     {
@@ -91,6 +91,7 @@ namespace SeaShellUtilities
         public static void RotateInPlace<T>(this T[] array, int offset = 1, string direction = "left")
         {
             if (array.Length == 0) { return; }
+
             if (direction.ToLower() != "left" && direction.ToLower() != "right") {
                 return;
             }

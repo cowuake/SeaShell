@@ -3,15 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{1125DF0C-1DAE-46BE-A6D8-1BEFFBB95045}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeaShell", "SeaShell\SeaShell.csproj", "{11E21929-674A-41B1-9367-2A32C85E7DC4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeaShellUtilities.Tests", "tests\SeaShellUtilities.Tests\SeaShellUtilities.Tests.csproj", "{09BCE9DB-CCD1-47B9-989D-2A4FB1F10690}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F1CD92AE-B4C0-4FCA-8DC8-AB2554C23498}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeaShell", "src\SeaShell\SeaShell.csproj", "{32E5C532-70CE-4396-A0CB-46F8EE732403}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeaShellUtilities", "src\SeaShellUtilities\SeaShellUtilities.csproj", "{17FDA152-71DC-409F-B268-2152B2FFFE78}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeaShellTest", "SeaShellTest\SeaShellTest.csproj", "{5694D365-52A3-4E99-9C3E-F015AF2F94BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,22 +16,13 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{09BCE9DB-CCD1-47B9-989D-2A4FB1F10690}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{09BCE9DB-CCD1-47B9-989D-2A4FB1F10690}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{09BCE9DB-CCD1-47B9-989D-2A4FB1F10690}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{09BCE9DB-CCD1-47B9-989D-2A4FB1F10690}.Release|Any CPU.Build.0 = Release|Any CPU
-		{32E5C532-70CE-4396-A0CB-46F8EE732403}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{32E5C532-70CE-4396-A0CB-46F8EE732403}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{32E5C532-70CE-4396-A0CB-46F8EE732403}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{32E5C532-70CE-4396-A0CB-46F8EE732403}.Release|Any CPU.Build.0 = Release|Any CPU
-		{17FDA152-71DC-409F-B268-2152B2FFFE78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{17FDA152-71DC-409F-B268-2152B2FFFE78}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{17FDA152-71DC-409F-B268-2152B2FFFE78}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{17FDA152-71DC-409F-B268-2152B2FFFE78}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{09BCE9DB-CCD1-47B9-989D-2A4FB1F10690} = {1125DF0C-1DAE-46BE-A6D8-1BEFFBB95045}
-		{32E5C532-70CE-4396-A0CB-46F8EE732403} = {F1CD92AE-B4C0-4FCA-8DC8-AB2554C23498}
-		{17FDA152-71DC-409F-B268-2152B2FFFE78} = {F1CD92AE-B4C0-4FCA-8DC8-AB2554C23498}
+		{11E21929-674A-41B1-9367-2A32C85E7DC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11E21929-674A-41B1-9367-2A32C85E7DC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11E21929-674A-41B1-9367-2A32C85E7DC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11E21929-674A-41B1-9367-2A32C85E7DC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5694D365-52A3-4E99-9C3E-F015AF2F94BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5694D365-52A3-4E99-9C3E-F015AF2F94BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5694D365-52A3-4E99-9C3E-F015AF2F94BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5694D365-52A3-4E99-9C3E-F015AF2F94BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
