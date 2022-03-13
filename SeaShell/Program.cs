@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+﻿using SeaShell.Model;
 using SeaShell.Utilities;
 
 namespace SeaShell
@@ -15,78 +15,6 @@ namespace SeaShell
             catch (Exception excpt)
             {
                 Console.WriteLine(excpt.Message);
-            }
-        }
-    }
-
-    public class Instruction
-    {
-        public string Command;
-        public string Args;
-        public Process Proc;
-
-        public Int32 ?ExitCode;
-        public string ?Stdout;
-        public string ?Stderr;
-
-        // Constructor
-        public Instruction(string command, string args)
-        {
-            Command = command;
-            Args = args;
-            Proc = new Process();
-        }
-
-        public void Execute()
-        {
-            this.Proc.StartInfo.FileName = this.Command;
-            this.Proc.StartInfo.Arguments = this.Args;
-
-            // Spawn the process
-            this.Proc.Start();
-
-            if (this.Proc.StartInfo.RedirectStandardError == true)
-            { this.Stderr = this.Proc.StandardError.ReadToEnd(); }
-
-            if (this.Proc.StartInfo.RedirectStandardOutput == true)
-            { this.Stdout = this.Proc.StandardOutput.ReadToEnd(); }
-
-            this.Proc.WaitForExit();
-
-            //Console.WriteLine(this.Stdout);
-            this.ExitCode = this.Proc.ExitCode;
-        }
-    }
-
-    public class Pipeline
-    {
-        public Instruction[] Instructions;
-        public Int32 Length;
-
-        // Constructor
-        public Pipeline(Instruction[] instructions)
-        {
-            this.Instructions = instructions;
-            this.Length = instructions.Length;
-        }
-
-        public void Execute()
-        {
-            if (this.Length > 1) { this.Instructions[0].Proc.StartInfo.RedirectStandardOutput = true; }
-            this.Instructions[0].Execute();
-
-            for (int i = 1; i < this.Length; i++)
-            {
-                if (this.Instructions[i-1].ExitCode == 0)
-                {
-                    if (i < this.Length - 1)
-                    {
-                        this.Instructions[i].Proc.StartInfo.RedirectStandardOutput = true;
-                    }
-                    //this.Instructions[i].Args += (" " + this.Instructions[i-1].Stdout);
-
-                    this.Instructions[i].Execute();
-                }
             }
         }
     }
@@ -184,7 +112,9 @@ namespace SeaShell
                 {
                     var instruction = new Instruction(command, args);
                     instruction.Execute();
-                } catch (System.ComponentModel.Win32Exception e) {
+                }
+                catch (System.ComponentModel.Win32Exception e)
+                {
                     //Console.WriteLine(e.ToString());
 
                     //var message = new StringBuilder();
