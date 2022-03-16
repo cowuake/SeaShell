@@ -1,3 +1,4 @@
+using System.Linq;
 using SeaShell.Commands;
 using SeaShell.Utilities;
 
@@ -5,8 +6,8 @@ namespace SeaShell.Model
 {
     public class Shell
     {
-        public static Dictionary<string, Action<string>> BuiltinCommands =
-            new Dictionary<string, Action<string>>()
+        public static Dictionary<string, Action<string[]>> BuiltinCommands =
+            new Dictionary<string, Action<string[]>>()
         {
             { "beep"        , (args) => BaseCommands.Beep()        },
             { "cow"         , (args) => BaseCommands.Cow()         },
@@ -19,7 +20,10 @@ namespace SeaShell.Model
         private void WriteColored(string text, ConsoleColor color, bool newLine = false)
         {
             Console.ForegroundColor = color;
-            if (newLine) { Console.WriteLine(text); } else { Console.Write(text); }
+
+            Action<string> Write = newLine ? Console.WriteLine : Console.Write;
+            Write(text);
+
             Console.ResetColor();
         }
 
@@ -28,48 +32,41 @@ namespace SeaShell.Model
             WriteColored(text, color, true);
         }
 
-        private (string?, string?) Prompt()
+        private bool ReadFromPrompt(out string command, out string[] args)
         {
-        //Console.WriteLine("[{0}@{1}]", Environment.UserName, Environment.MachineName);
+            //Console.WriteLine("[{0}@{1}]", Environment.UserName, Environment.MachineName);
             WriteColored(">> ", ConsoleColor.DarkCyan);
             string? rawInput = Console.ReadLine();
 
-            if (rawInput != null)
-            {
-                string[] input = rawInput.Trim().Split(' ');
-                string command = input[0];
+            command = String.Empty;
+            args = new string[0];
 
-                for (int i = 1; i < input.Length-1; i++)
-                {
-                    // Clean command and arguments
-                    input[i].Trim();
-                }
-                string args = string.Join(" ", input[1..]);
+            if (rawInput is null)
+                return false;
 
-                return (command, args);
-            }
+            string[] input = rawInput.Trim().Split(' ');
+            input.Select(s => s.Trim()).ToArray();
 
-            return (null, null);
+            command = input[0];
+
+            if (input.Length > 1)
+                args = input[1..];
+
+            return true;
         }
 
         public void Run()
         {
-            string? command, args;
+            string? command;
+            string[]? args;
 
             while (true)
             {
-                (command, args) = Prompt();
-
-                // Don't waste time within the cycle if input was void
-                if (string.IsNullOrEmpty(command) || string.IsNullOrWhiteSpace(command))
-                {
+                if (!ReadFromPrompt(out command, out args))
                     continue;
-                }
 
                 if (command.IsAllUpper())
-                {
                     WriteLineColored("Please, don't shout at me! D:", ConsoleColor.DarkMagenta);
-                }
 
                 if (BuiltinCommands.ContainsKey(command))
                 {
@@ -82,11 +79,8 @@ namespace SeaShell.Model
                     var instruction = new Instruction(command, args);
                     instruction.Execute();
                 }
-                catch (System.ComponentModel.Win32Exception e)
+                catch
                 {
-                    //Console.WriteLine(e.ToString());
-
-                    //var message = new StringBuilder();
                     var message = "Command not found: ";
                     var filler = "";
                     var body = String.Format($"{command} {args}");
