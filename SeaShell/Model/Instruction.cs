@@ -29,7 +29,7 @@ namespace SeaShell.Model
             if (Proc.StartInfo.RedirectStandardError)
                 Stderr = Proc.StandardError.ReadToEnd();
 
-            if (this.Proc.StartInfo.RedirectStandardOutput)
+            if (Proc.StartInfo.RedirectStandardOutput)
                 Stdout = Proc.StandardOutput.ReadToEnd();
 
             Proc.WaitForExit();

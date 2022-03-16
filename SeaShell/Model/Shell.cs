@@ -81,14 +81,17 @@ namespace SeaShell.Model
                 }
                 catch
                 {
-                    var message = "Command not found: ";
-                    var filler = "";
-                    var body = String.Format($"{command} {args}");
+                    string message = "Command not found: ";
+                    string filler = "";
+
+                    string argsToString = string.Join(' ', args);
+
+                    string body = $"{command} {argsToString}";
 
                     filler += ((message + body).IsWithinBufferWidth()) ? "" : "\n";
 
                     WriteColored(message, ConsoleColor.Red);
-                    Console.WriteLine($"{filler}{command} {args}");
+                    Console.WriteLine($"{filler}{body}");
                 }
             }
         }
